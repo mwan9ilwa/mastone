@@ -116,7 +116,7 @@ export function HeroSlider({ slides }: { slides: HeroSlide[] }) {
               {slide.eyebrow}
             </motion.span>
 
-            <h1 className="font-heading text-5xl leading-[0.92] font-bold tracking-tight uppercase sm:text-7xl lg:text-8xl">
+            <p className="font-heading text-5xl leading-[0.92] font-bold tracking-tight uppercase sm:text-7xl lg:text-8xl">
               {slide.title.map((line, i) => (
                 <span key={line} className="block overflow-hidden pb-1">
                   <motion.span variants={maskUp} className={cn("block", i === 1 && "text-brand")}>
@@ -124,7 +124,7 @@ export function HeroSlider({ slides }: { slides: HeroSlide[] }) {
                   </motion.span>
                 </span>
               ))}
-            </h1>
+            </p>
 
             <motion.p variants={fadeUp} className="mt-6 max-w-xl text-lg leading-relaxed text-white/75 sm:text-xl">
               {slide.text}

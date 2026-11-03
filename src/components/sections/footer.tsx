@@ -1,9 +1,11 @@
 import Image from "next/image";
+import Link from "next/link";
 import { Mail, MapPin, Phone } from "lucide-react";
 import { CurrentYear } from "@/components/current-year";
 import { FacebookIcon, WhatsAppIcon } from "@/components/icons";
 import { telHref } from "@/lib/content/format";
-import type { Brand, Company, ProductCategory } from "@/lib/content/schema";
+import type { CatalogCategory } from "@/lib/catalog";
+import type { Brand, Company } from "@/lib/content/schema";
 import { navLinks } from "@/lib/site";
 
 const socials = (company: Company) => [
@@ -17,11 +19,13 @@ const socials = (company: Company) => [
 export function Footer({
   company,
   brands,
-  productCategories,
+  catalog,
+  home = true,
 }: {
   company: Company;
   brands: Brand[];
-  productCategories: ProductCategory[];
+  catalog: CatalogCategory[];
+  home?: boolean;
 }) {
   return (
     <footer className="relative overflow-hidden bg-navy-900 text-white">
@@ -50,8 +54,8 @@ export function Footer({
           </ul>
         </div>
 
-        <FooterList title="Company" items={navLinks.map((l) => ({ label: l.label, href: l.href }))} />
-        <FooterList title="Products" items={productCategories.map((c) => ({ label: c.label, href: "#products" }))} />
+        <FooterList title="Company" items={navLinks.map((l) => ({ label: l.label, href: (home ? "" : "/") + l.href }))} />
+        <FooterList title="Products" items={[...catalog.map((c) => ({ label: c.label, href: c.href })), { label: "All products", href: "/products" }]} />
 
         <div>
           <h4 className="font-heading text-lg font-bold tracking-widest text-brand uppercase">Get in touch</h4>
@@ -101,9 +105,9 @@ function FooterList({ title, items }: { title: string; items: { label: string; h
       <ul className="mt-5 space-y-3 text-sm text-white/70">
         {items.map((item) => (
           <li key={item.label}>
-            <a href={item.href} className="transition-colors hover:text-white">
+            <Link href={item.href} className="transition-colors hover:text-white">
               {item.label}
-            </a>
+            </Link>
           </li>
         ))}
       </ul>

@@ -65,7 +65,7 @@ export function Industries({ industries }: { industries: Industry[] }) {
               <div className="relative mx-auto h-[42%] w-[80%]">
                 <Image
                   src={ind.image}
-                  alt=""
+                  alt={ind.title}
                   fill
                   sizes="360px"
                   unoptimized={isUploaded(ind.image)}

@@ -1,6 +1,7 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Barlow, Barlow_Condensed } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
+import { siteDescription, siteKeywords, siteName, siteTitle, siteUrl } from "@/lib/site";
 import "./globals.css";
 
 const barlow = Barlow({
@@ -16,9 +17,43 @@ const barlowCondensed = Barlow_Condensed({
 });
 
 export const metadata: Metadata = {
-  title: "Mastone Investments Ltd | Equipment & Power Solutions in Zambia",
-  description:
-    "Mastone Investments Ltd supplies SUNWARD construction and mining machinery, YTO tractors, WEICHAI and SINOTRUK trucks, generators and premium engine oils across Zambia, backed by parts and after-sales support.",
+  metadataBase: new URL(siteUrl),
+  title: { default: siteTitle, template: "%s | Mastone Investments" },
+  description: siteDescription,
+  applicationName: siteName,
+  keywords: siteKeywords,
+  authors: [{ name: siteName, url: siteUrl }],
+  creator: siteName,
+  publisher: siteName,
+  category: "business",
+  openGraph: {
+    type: "website",
+    locale: "en_ZM",
+    url: "/",
+    siteName,
+    title: siteTitle,
+    description: siteDescription,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: siteTitle,
+    description: siteDescription,
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1, "max-video-preview": -1 },
+  },
+  // Set these env vars to the codes Google Search Console / Bing Webmaster Tools give you to verify ownership.
+  verification: {
+    google: process.env.GOOGLE_SITE_VERIFICATION,
+    other: process.env.BING_SITE_VERIFICATION ? { "msvalidate.01": process.env.BING_SITE_VERIFICATION } : undefined,
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#0a1a33",
+  colorScheme: "light",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

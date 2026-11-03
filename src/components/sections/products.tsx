@@ -2,16 +2,18 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { motion, useMotionTemplate, useMotionValue, useSpring } from "motion/react";
-import { ArrowUpRight, ChevronDown, Phone } from "lucide-react";
+import { ArrowRight, ArrowUpRight, ChevronDown, Phone } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Reveal, SectionLabel } from "@/components/reveal";
 import { isUploaded, telHref, whatsappHref } from "@/lib/content/format";
-import type { Product, ProductCategory } from "@/lib/content/schema";
+import type { CatalogCategory, CatalogProduct } from "@/lib/catalog";
+import type { Product } from "@/lib/content/schema";
 import { cn } from "@/lib/utils";
 
-export function Products({ productCategories }: { productCategories: ProductCategory[] }) {
+export function Products({ productCategories }: { productCategories: CatalogCategory[] }) {
   const [active, setActive] = useState(productCategories[0].id);
 
   return (
@@ -57,23 +59,21 @@ export function Products({ productCategories }: { productCategories: ProductCate
 
           {productCategories.map((c) => (
             <TabsContent key={c.id} value={c.id} className="mt-8">
-              <motion.p
+              <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className="mb-8 text-base text-muted-foreground"
+                className="mb-8 flex flex-col justify-between gap-3 sm:flex-row sm:items-center"
               >
-                {c.blurb}
-              </motion.p>
-              <motion.div
-                className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4"
-                initial="hidden"
-                animate="show"
-                variants={{ show: { transition: { staggerChildren: 0.08 } } }}
-              >
-                {c.products.map((p) => (
-                  <ProductCard key={p.name} product={p} enquiryPhone={p.enquiryPhone ?? c.enquiryPhone} />
-                ))}
+                <p className="text-base text-muted-foreground">{c.blurb}</p>
+                <Link
+                  href={c.href}
+                  className="group inline-flex shrink-0 items-center gap-1.5 text-sm font-semibold text-brand-deep transition-colors hover:text-navy"
+                >
+                  View all {c.label}
+                  <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
+                </Link>
               </motion.div>
+              <ProductGrid category={c} />
             </TabsContent>
           ))}
         </Tabs>
@@ -82,7 +82,23 @@ export function Products({ productCategories }: { productCategories: ProductCate
   );
 }
 
-function ProductCard({ product, enquiryPhone }: { product: Product; enquiryPhone?: string }) {
+/** Cards for a category's products, staggering in on mount. */
+export function ProductGrid({ category, products = category.products }: { category: CatalogCategory; products?: CatalogProduct[] }) {
+  return (
+    <motion.div
+      className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4"
+      initial="hidden"
+      animate="show"
+      variants={{ show: { transition: { staggerChildren: 0.08 } } }}
+    >
+      {products.map((p) => (
+        <ProductCard key={p.slug} product={p} enquiryPhone={p.enquiryPhone ?? category.enquiryPhone} />
+      ))}
+    </motion.div>
+  );
+}
+
+function ProductCard({ product, enquiryPhone }: { product: CatalogProduct; enquiryPhone?: string }) {
   const rx = useMotionValue(0);
   const ry = useMotionValue(0);
   const gx = useMotionValue(50);
@@ -114,7 +130,7 @@ function ProductCard({ product, enquiryPhone }: { product: Product; enquiryPhone
       className="group relative flex flex-col overflow-hidden rounded-3xl bg-white shadow-sm ring-1 ring-border transition-shadow duration-500 hover:shadow-2xl hover:shadow-navy/15"
     >
       <motion.div style={{ background: glow }} className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-      <div className="relative aspect-[4/3] bg-gradient-to-b from-secondary to-white">
+      <Link href={product.href} tabIndex={-1} aria-hidden className="relative block aspect-[4/3] bg-gradient-to-b from-secondary to-white">
         <Badge className="absolute top-4 left-4 z-10 rounded-full bg-navy-900 px-3 text-[0.65rem] tracking-[0.15em] text-white uppercase">
           {product.brand}
         </Badge>
@@ -127,15 +143,20 @@ function ProductCard({ product, enquiryPhone }: { product: Product; enquiryPhone
           unoptimized={isUploaded(product.image)}
           className="object-contain p-8 transition-transform duration-700 ease-out group-hover:scale-110 group-hover:-translate-y-1"
         />
-      </div>
+      </Link>
       <div className="relative flex flex-1 flex-col p-6">
-        <h3 className="font-heading text-2xl font-bold tracking-wide text-navy uppercase">{product.name}</h3>
+        <h3 className="font-heading text-2xl font-bold tracking-wide text-navy uppercase">
+          {/* Stretched link: the card body opens the product page (as does the image); specs and enquiry links sit above it. */}
+          <Link href={product.href} className="after:absolute after:inset-0 after:content-['']">
+            {product.name}
+          </Link>
+        </h3>
         <p className="mt-1 text-sm text-muted-foreground">{product.models}</p>
-        <div className="flex-1">{product.specs.length > 0 && <SpecList specs={product.specs} />}</div>
-        <div className="mt-5 flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
+        <div className="relative flex-1">{product.specs.length > 0 && <SpecList specs={product.specs} />}</div>
+        <div className="relative mt-5 flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
           {/* Products with their own enquiry line go straight to it; the rest use the quote form. */}
           <a
-            href={enquiryPhone ? whatsappHref(enquiryPhone, `Hello Mastone, I'd like a quote for the ${product.brand} ${product.name}.`) : "#contact"}
+            href={enquiryPhone ? whatsappHref(enquiryPhone, `Hello Mastone, I'd like a quote for the ${product.fullName}.`) : "/#contact"}
             target={enquiryPhone ? "_blank" : undefined}
             rel="noopener"
             className="inline-flex items-center gap-1.5 text-sm font-semibold text-brand-deep transition-colors hover:text-navy"

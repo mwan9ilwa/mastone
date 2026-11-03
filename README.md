@@ -45,10 +45,14 @@ The tables are created automatically on first use.
 | `SESSION_SECRET` | Signs the login cookie (`openssl rand -base64 32`) |
 | `TURSO_DATABASE_URL` | `libsql://…` URL of the Turso database |
 | `TURSO_AUTH_TOKEN` | Turso access token |
+| `NEXT_PUBLIC_SITE_URL` | Live domain, e.g. `https://mastone.co.zm`. Needed at build time for SEO (canonical URLs, sitemap, share previews) |
+| `GOOGLE_SITE_VERIFICATION`, `BING_SITE_VERIFICATION` | Optional search console verification codes |
+
+After the first deploy, follow the launch checklist in [docs/SEO.md](docs/SEO.md) (Search Console, Google Business Profile, etc.).
 
 ### Vercel
 
-Import the repo in Vercel, add the four variables above under **Settings → Environment Variables**, and deploy. No other configuration is needed; `wrangler.jsonc` and `open-next.config.ts` are ignored.
+Import the repo in Vercel, add the variables above under **Settings → Environment Variables**, and deploy. No other configuration is needed; `wrangler.jsonc` and `open-next.config.ts` are ignored.
 
 ### Cloudflare Workers
 
@@ -65,6 +69,10 @@ npm run deploy:cf
 `npm run preview:cf` runs the Workers build locally (put the variables in `.dev.vars`).
 
 Images uploaded from the dashboard are served without Next's image optimizer on both hosts, because Cloudflare's optimizer can only read static files. They are cached by browsers and CDNs for a year. Keep uploads reasonably sized.
+
+## SEO
+
+See [docs/SEO.md](docs/SEO.md) for what's in place, the launch checklist and the plan for ranking product searches in Zambia.
 
 ## Contact form
 

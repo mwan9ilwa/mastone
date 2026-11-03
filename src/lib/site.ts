@@ -6,3 +6,37 @@ export const navLinks = [
   { label: "Industries", href: "#industries" },
   { label: "Contact", href: "#contact" },
 ];
+
+/**
+ * Public origin of the site, used for canonical URLs, the sitemap, Open Graph tags and structured data.
+ * Set NEXT_PUBLIC_SITE_URL to the production domain (e.g. https://mastone.co.zm). It is read at build time.
+ */
+export const siteUrl = (
+  process.env.NEXT_PUBLIC_SITE_URL ||
+  (process.env.VERCEL_PROJECT_PRODUCTION_URL && `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`) ||
+  "http://localhost:3000"
+).replace(/\/+$/, "");
+
+/** Absolute URL for a site path or an already-absolute URL. */
+export const absoluteUrl = (path: string) => new URL(path, `${siteUrl}/`).toString();
+
+export const siteName = "Mastone Investments Ltd";
+export const siteTitle = "Mastone Investments Ltd | Equipment & Power Solutions in Zambia";
+export const siteDescription =
+  "Mastone Investments Ltd supplies SUNWARD construction and mining machinery, YTO tractors, WEICHAI and SINOTRUK trucks, generators and premium engine oils across Zambia, backed by parts and after-sales support.";
+
+export const siteKeywords = [
+  "Mastone Investments",
+  "construction equipment Zambia",
+  "mining equipment Zambia",
+  "SUNWARD excavators Zambia",
+  "SUNWARD wheel loaders",
+  "YTO tractors Zambia",
+  "WEICHAI generators Zambia",
+  "diesel generators Lusaka",
+  "SINOTRUK HOWO trucks Zambia",
+  "SHACMAN trucks",
+  "heavy machinery Lusaka",
+  "equipment dealer Chibombo",
+  "spare parts and after-sales service Zambia",
+];

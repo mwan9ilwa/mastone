@@ -5,18 +5,22 @@ import Image from "next/image";
 import { motion, useMotionValueEvent, useScroll } from "motion/react";
 import { Menu, Phone } from "lucide-react";
 import { useLenis } from "lenis/react";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { telHref } from "@/lib/content/format";
 import { navLinks } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
-export function Navbar({ phone }: { phone: string }) {
+/** On the home page links scroll to its sections; on inner pages (`home={false}`) they go back to them. */
+export function Navbar({ phone, home = true }: { phone: string; home?: boolean }) {
+  const base = home ? "" : "/";
   const { scrollY } = useScroll();
   const [scrolled, setScrolled] = useState(false);
   const [hidden, setHidden] = useState(false);
   const [open, setOpen] = useState(false);
   const lenis = useLenis();
+  const router = useRouter();
 
   useMotionValueEvent(scrollY, "change", (y) => {
     const prev = scrollY.getPrevious() ?? 0;
@@ -26,7 +30,8 @@ export function Navbar({ phone }: { phone: string }) {
 
   const go = (href: string) => {
     setOpen(false);
-    lenis?.scrollTo(href, { offset: -72 });
+    if (home) lenis?.scrollTo(href, { offset: -72 });
+    else router.push(base + href);
   };
 
   return (
@@ -39,7 +44,7 @@ export function Navbar({ phone }: { phone: string }) {
       )}
     >
       <nav className="mx-auto flex h-18 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        <a href="#home" aria-label="Mastone Investments home" className="shrink-0">
+        <a href={home ? "#home" : "/"} aria-label="Mastone Investments home" className="shrink-0">
           <Image src="/images/logo-white.png" alt="Mastone Investments Limited" width={354} height={101} className="h-9 w-auto sm:h-10" preload />
         </a>
 
@@ -47,7 +52,7 @@ export function Navbar({ phone }: { phone: string }) {
           {navLinks.map((link) => (
             <li key={link.href}>
               <a
-                href={link.href}
+                href={base + link.href}
                 className="group relative px-4 py-2 text-[0.95rem] font-medium text-white/80 transition-colors hover:text-white"
               >
                 {link.label}
@@ -66,7 +71,7 @@ export function Navbar({ phone }: { phone: string }) {
             {phone}
           </a>
           <Button asChild className="ml-3 hidden h-10 rounded-full px-5 font-semibold sm:inline-flex">
-            <a href="#contact">Get a Quote</a>
+            <a href={`${base}#contact`}>Get a Quote</a>
           </Button>
 
           <Sheet open={open} onOpenChange={setOpen}>
