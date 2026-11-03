@@ -2,12 +2,12 @@
 
 import { motion } from "motion/react";
 import { WhatsAppIcon } from "@/components/icons";
-import { company } from "@/lib/site";
 
-export function WhatsAppButton() {
+
+export function WhatsAppButton({ whatsapp }: { whatsapp: string }) {
   return (
     <motion.a
-      href={`https://wa.me/${company.whatsapp}`}
+      href={`https://wa.me/${whatsapp}`}
       target="_blank"
       rel="noopener"
       aria-label="Chat with us on WhatsApp"

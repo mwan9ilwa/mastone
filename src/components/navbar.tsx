@@ -7,10 +7,11 @@ import { Menu, Phone } from "lucide-react";
 import { useLenis } from "lenis/react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { company, navLinks } from "@/lib/site";
+import { telHref } from "@/lib/content/format";
+import { navLinks } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
-export function Navbar() {
+export function Navbar({ phone }: { phone: string }) {
   const { scrollY } = useScroll();
   const [scrolled, setScrolled] = useState(false);
   const [hidden, setHidden] = useState(false);
@@ -58,11 +59,11 @@ export function Navbar() {
 
         <div className="flex items-center gap-2">
           <a
-            href={company.phoneHref}
+            href={telHref(phone)}
             className="hidden items-center gap-2 text-sm font-medium text-white/80 hover:text-white xl:flex"
           >
             <Phone className="size-4 text-brand" />
-            {company.phone}
+            {phone}
           </a>
           <Button asChild className="ml-3 hidden h-10 rounded-full px-5 font-semibold sm:inline-flex">
             <a href="#contact">Get a Quote</a>
@@ -101,8 +102,8 @@ export function Navbar() {
                 <Button onClick={() => go("#contact")} className="h-11 w-full rounded-full font-semibold">
                   Get a Quote
                 </Button>
-                <a href={company.phoneHref} className="flex items-center justify-center gap-2 text-sm text-white/70">
-                  <Phone className="size-4 text-brand" /> {company.phone}
+                <a href={telHref(phone)} className="flex items-center justify-center gap-2 text-sm text-white/70">
+                  <Phone className="size-4 text-brand" /> {phone}
                 </a>
               </div>
             </SheetContent>

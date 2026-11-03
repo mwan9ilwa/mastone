@@ -2,17 +2,27 @@ import Image from "next/image";
 import { Mail, MapPin, Phone } from "lucide-react";
 import { CurrentYear } from "@/components/current-year";
 import { FacebookIcon, WhatsAppIcon } from "@/components/icons";
-import { brands, company, navLinks, productCategories } from "@/lib/site";
+import { telHref } from "@/lib/content/format";
+import type { Brand, Company, ProductCategory } from "@/lib/content/schema";
+import { navLinks } from "@/lib/site";
 
-const socials = [
-  { label: `Call ${company.phone}`, href: company.phoneHref, icon: Phone },
+const socials = (company: Company) => [
+  { label: `Call ${company.phone}`, href: telHref(company.phone), icon: Phone },
   { label: "Chat on WhatsApp", href: `https://wa.me/${company.whatsapp}`, icon: WhatsAppIcon },
   { label: `Email ${company.email}`, href: `mailto:${company.email}`, icon: Mail },
   { label: `Facebook: ${company.facebook}`, href: company.facebookUrl, icon: FacebookIcon },
   { label: "Find us on Google Maps", href: company.mapUrl, icon: MapPin },
 ];
 
-export function Footer() {
+export function Footer({
+  company,
+  brands,
+  productCategories,
+}: {
+  company: Company;
+  brands: Brand[];
+  productCategories: ProductCategory[];
+}) {
   return (
     <footer className="relative overflow-hidden bg-navy-900 text-white">
       <div className="h-1 bg-gradient-to-r from-brand via-brand-deep to-brand" />
@@ -23,7 +33,7 @@ export function Footer() {
             Integrated equipment and power solutions provider in Zambia — machinery, vehicles, generators, parts and after-sales support.
           </p>
           <ul className="mt-6 flex flex-wrap gap-3">
-            {socials.map((s) => (
+            {socials(company).map((s) => (
               <li key={s.label}>
                 <a
                   href={s.href}
@@ -48,7 +58,7 @@ export function Footer() {
           <ul className="mt-5 space-y-4 text-sm text-white/70">
             <li className="flex gap-3">
               <Phone className="size-4 shrink-0 text-brand" />
-              <a href={company.phoneHref} className="hover:text-white">{company.phone}</a>
+              <a href={telHref(company.phone)} className="hover:text-white">{company.phone}</a>
             </li>
             <li className="flex gap-3">
               <Mail className="size-4 shrink-0 text-brand" />

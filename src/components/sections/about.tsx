@@ -6,23 +6,9 @@ import { motion, useScroll, useTransform } from "motion/react";
 import { Check, Quote } from "lucide-react";
 import { Reveal, SectionLabel } from "@/components/reveal";
 import { Counter } from "@/components/counter";
-import { company } from "@/lib/site";
+import type { About as AboutContent } from "@/lib/content/schema";
 
-const points = [
-  "Construction, mining & farming equipment",
-  "Generators & premium engine oils",
-  "Genuine spare parts supply",
-  "Maintenance & technical support",
-];
-
-const stats = [
-  { value: 2025, label: "Established in Zambia", format: false },
-  { value: 6, suffix: "+", label: "Global partner brands" },
-  { value: 25, suffix: "+", label: "Years of SUNWARD engineering" },
-  { value: 1250, suffix: " kVA", label: "Max generator capacity" },
-];
-
-export function About() {
+export function About({ about, tagline }: { about: AboutContent; tagline: string }) {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
   const yBig = useTransform(scrollYProgress, [0, 1], ["8%", "-8%"]);
@@ -73,21 +59,19 @@ export function About() {
             </h2>
           </Reveal>
           <Reveal delay={0.1}>
-            <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
-              Established in 2025, <strong className="text-foreground">Mastone Investments Ltd.</strong> is a leading integrated equipment
-              and power solutions provider based in Zambia, delivering high-quality machinery, power systems, commercial vehicles and
-              after-sales support to customers across multiple industries.
-            </p>
-            <p className="mt-4 leading-relaxed text-muted-foreground">
-              We proudly supply SUNWARD machinery — a globally recognised brand serving the heavy-duty equipment industry since 1999.
-              Through strong partnerships and professional technical support, we provide reliable, efficient and innovative solutions
-              tailored to the demands of the African market.
-            </p>
+            {about.paragraphs.map((p, i) => (
+              <p
+                key={i}
+                className={i === 0 ? "mt-6 text-lg leading-relaxed text-muted-foreground" : "mt-4 leading-relaxed text-muted-foreground"}
+              >
+                <RichText text={p} />
+              </p>
+            ))}
           </Reveal>
 
           <Reveal delay={0.2}>
             <ul className="mt-8 grid gap-3 sm:grid-cols-2">
-              {points.map((p) => (
+              {about.points.map((p) => (
                 <li key={p} className="flex items-start gap-3 text-[0.95rem] font-medium text-foreground">
                   <span className="mt-0.5 grid size-5 shrink-0 place-items-center rounded-full bg-brand text-navy-900">
                     <Check className="size-3" strokeWidth={3} />
@@ -101,7 +85,7 @@ export function About() {
           <Reveal delay={0.3}>
             <figure className="mt-10 flex gap-4 border-l-4 border-brand pl-5">
               <Quote className="size-8 shrink-0 text-brand" />
-              <blockquote className="font-heading text-2xl font-semibold tracking-wide text-navy uppercase">{company.tagline}</blockquote>
+              <blockquote className="font-heading text-2xl font-semibold tracking-wide text-navy uppercase">{tagline}</blockquote>
             </figure>
           </Reveal>
         </div>
@@ -110,7 +94,7 @@ export function About() {
       {/* Stats */}
       <div className="relative mx-auto mt-24 max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-2 gap-px overflow-hidden rounded-3xl bg-white/10 text-white shadow-2xl shadow-navy/20 lg:grid-cols-4">
-          {stats.map((s, i) => (
+          {about.stats.map((s, i) => (
             <Reveal
               key={s.label}
               delay={i * 0.1}
@@ -125,5 +109,18 @@ export function About() {
         </div>
       </div>
     </section>
+  );
+}
+
+/** Renders **double-asterisk** spans from the dashboard as bold text. */
+function RichText({ text }: { text: string }) {
+  return text.split(/\*\*(.+?)\*\*/g).map((part, i) =>
+    i % 2 ? (
+      <strong key={i} className="text-foreground">
+        {part}
+      </strong>
+    ) : (
+      part
+    )
   );
 }

@@ -13,13 +13,14 @@ import {
 } from "motion/react";
 import { ArrowRight, ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { heroSlides, type HeroSlide } from "@/lib/site";
+import { isUploaded } from "@/lib/content/format";
+import type { HeroSlide } from "@/lib/content/schema";
 import { cn } from "@/lib/utils";
 
 const DURATION = 7000;
 const ease = [0.22, 1, 0.36, 1] as const;
 
-export function HeroSlider() {
+export function HeroSlider({ slides }: { slides: HeroSlide[] }) {
   const sectionRef = useRef<HTMLElement>(null);
   const [[index, direction], setSlide] = useState<[number, number]>([0, 1]);
   const [paused, setPaused] = useState(false);
@@ -32,8 +33,8 @@ export function HeroSlider() {
   const contentOpacity = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
 
   const paginate = useCallback((dir: number) => {
-    setSlide(([i]) => [(i + dir + heroSlides.length) % heroSlides.length, dir]);
-  }, []);
+    setSlide(([i]) => [(i + dir + slides.length) % slides.length, dir]);
+  }, [slides.length]);
 
   const goTo = (i: number) => setSlide(([cur]) => [i, i > cur ? 1 : -1]);
 
@@ -55,7 +56,7 @@ export function HeroSlider() {
     return () => cancelAnimationFrame(raf);
   }, [index, paused, paginate, progress]);
 
-  const slide = heroSlides[index];
+  const slide = slides[index];
 
   return (
     <section
@@ -153,7 +154,7 @@ export function HeroSlider() {
       <div className="absolute inset-x-0 bottom-0 z-20">
         <div className="mx-auto flex max-w-7xl items-end justify-between gap-6 px-4 pr-22 pb-8 sm:px-6 sm:pr-22 lg:px-8 xl:pr-8">
           <div className="flex flex-1 gap-3 sm:gap-6">
-            {heroSlides.map((s, i) => (
+            {slides.map((s, i) => (
               <button
                 key={s.eyebrow}
                 onClick={() => goTo(i)}
@@ -231,7 +232,7 @@ function SlideBackground({ slide, first }: { slide: HeroSlide; first: boolean })
         animate={{ scale: 1.02 }}
         transition={{ duration: DURATION / 1000 + 1.5, ease: "linear" }}
       >
-        <Image src={slide.image} alt="" fill sizes="100vw" className="object-cover" loading={first ? "eager" : undefined} fetchPriority={first ? "high" : undefined} />
+        <Image src={slide.image} alt="" fill sizes="100vw" unoptimized={isUploaded(slide.image)} className="object-cover" loading={first ? "eager" : undefined} fetchPriority={first ? "high" : undefined} />
       </motion.div>
     );
   }
@@ -259,7 +260,7 @@ function SlideBackground({ slide, first }: { slide: HeroSlide; first: boolean })
             animate={{ y: [0, -14, 0] }}
             transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
           >
-            <Image src={slide.image} alt="" fill sizes="40vw" className="object-contain drop-shadow-[0_40px_40px_rgba(0,0,0,0.55)]" />
+            <Image src={slide.image} alt="" fill sizes="40vw" unoptimized={isUploaded(slide.image)} className="object-contain drop-shadow-[0_40px_40px_rgba(0,0,0,0.55)]" />
           </motion.div>
           <div className="absolute -bottom-6 left-1/2 h-8 w-3/4 -translate-x-1/2 rounded-[100%] bg-black/50 blur-xl" />
         </motion.div>
@@ -270,7 +271,7 @@ function SlideBackground({ slide, first }: { slide: HeroSlide; first: boolean })
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 1.1, delay: 0.7, ease }}
           >
-            <Image src={slide.secondaryImage} alt="" fill sizes="20vw" className="object-contain drop-shadow-[0_25px_25px_rgba(0,0,0,0.5)]" />
+            <Image src={slide.secondaryImage} alt="" fill sizes="20vw" unoptimized={isUploaded(slide.secondaryImage)} className="object-contain drop-shadow-[0_25px_25px_rgba(0,0,0,0.5)]" />
           </motion.div>
         )}
       </div>

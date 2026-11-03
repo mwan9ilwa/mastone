@@ -1,19 +1,11 @@
 "use client";
 
 import { motion } from "motion/react";
-import { Droplet, Headset, Package, ShieldCheck, Truck, Wrench } from "lucide-react";
 import { Reveal, SectionLabel } from "@/components/reveal";
+import { ContentIcon } from "@/components/content-icons";
+import type { Service } from "@/lib/content/schema";
 
-const services = [
-  { icon: Truck, title: "Equipment Supply", text: "Construction, mining and farming machinery, commercial vehicles and power systems from trusted global brands." },
-  { icon: Headset, title: "Technical Support", text: "Professional guidance on selection, commissioning and operation from engineers who know the machines." },
-  { icon: Wrench, title: "Maintenance", text: "Scheduled servicing and repairs that maximise uptime and extend the working life of your fleet." },
-  { icon: Package, title: "Spare Parts Supply", text: "Reliable access to genuine spare parts to keep your equipment running at peak performance." },
-  { icon: Droplet, title: "Premium Engine Oils", text: "High-grade lubricants that protect engines working in demanding African conditions." },
-  { icon: ShieldCheck, title: "After-Sales Service", text: "Long-term partnership and responsive after-sales care designed to keep your operations moving." },
-];
-
-export function Services() {
+export function Services({ services }: { services: Service[] }) {
   return (
     <section id="services" className="relative overflow-hidden bg-navy-900 py-24 text-white sm:py-32">
       <div className="bg-grid pointer-events-none absolute inset-0 [mask-image:radial-gradient(ellipse_at_center,black,transparent_75%)]" />
@@ -42,7 +34,7 @@ export function Services() {
                   0{i + 1}
                 </span>
                 <div className="grid size-14 place-items-center rounded-2xl bg-brand/15 text-brand transition-all duration-500 group-hover:rotate-6 group-hover:bg-brand group-hover:text-navy-900">
-                  <s.icon className="size-7" />
+                  <ContentIcon name={s.icon} className="size-7" />
                 </div>
                 <h3 className="mt-6 font-heading text-2xl font-bold tracking-wide uppercase">{s.title}</h3>
                 <p className="mt-3 leading-relaxed text-white/60">{s.text}</p>

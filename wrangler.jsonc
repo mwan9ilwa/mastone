@@ -1,0 +1,17 @@
+{
+  // Cloudflare Workers deployment (see README). Vercel ignores this file.
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "mastone",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2026-10-01",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  "services": [{ "binding": "WORKER_SELF_REFERENCE", "service": "mastone" }],
+  "images": { "binding": "IMAGES" },
+  "r2_buckets": [{ "binding": "NEXT_INC_CACHE_R2_BUCKET", "bucket_name": "mastone-next-cache" }],
+  // Create with `npx wrangler d1 create mastone-next-tags` and paste the returned id here.
+  "d1_databases": [{ "binding": "NEXT_TAG_CACHE_D1", "database_name": "mastone-next-tags", "database_id": "REPLACE_WITH_D1_DATABASE_ID" }]
+}

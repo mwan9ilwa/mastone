@@ -1,7 +1,8 @@
 import Image from "next/image";
-import { brands } from "@/lib/site";
+import { isUploaded } from "@/lib/content/format";
+import type { Brand } from "@/lib/content/schema";
 
-export function BrandMarquee() {
+export function BrandMarquee({ brands }: { brands: Brand[] }) {
   const row = [...brands, ...brands];
   return (
     <section aria-label="Brands we supply" className="relative border-y border-border bg-white py-8">
@@ -15,7 +16,7 @@ export function BrandMarquee() {
               key={`${brand.name}-${i}`}
               className="relative h-14 w-36 shrink-0 opacity-60 grayscale transition duration-300 hover:opacity-100 hover:grayscale-0"
             >
-              <Image src={brand.logo} alt={i < brands.length ? brand.name : ""} fill sizes="144px" className="object-contain mix-blend-multiply" />
+              <Image src={brand.logo} alt={i < brands.length ? brand.name : ""} fill sizes="144px" unoptimized={isUploaded(brand.logo)} className="object-contain mix-blend-multiply" />
             </div>
           ))}
         </div>

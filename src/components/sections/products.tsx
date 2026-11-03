@@ -3,13 +3,15 @@
 import { useState } from "react";
 import Image from "next/image";
 import { motion, useMotionTemplate, useMotionValue, useSpring } from "motion/react";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, ChevronDown } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Reveal, SectionLabel } from "@/components/reveal";
-import { productCategories, type Product } from "@/lib/site";
+import { isUploaded } from "@/lib/content/format";
+import type { Product, ProductCategory } from "@/lib/content/schema";
+import { cn } from "@/lib/utils";
 
-export function Products() {
+export function Products({ productCategories }: { productCategories: ProductCategory[] }) {
   const [active, setActive] = useState(productCategories[0].id);
 
   return (
@@ -122,12 +124,14 @@ function ProductCard({ product }: { product: Product }) {
           alt={`${product.brand} ${product.name}`}
           fill
           sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
+          unoptimized={isUploaded(product.image)}
           className="object-contain p-8 transition-transform duration-700 ease-out group-hover:scale-110 group-hover:-translate-y-1"
         />
       </div>
       <div className="relative flex flex-1 flex-col p-6">
         <h3 className="font-heading text-2xl font-bold tracking-wide text-navy uppercase">{product.name}</h3>
-        <p className="mt-1 flex-1 text-sm text-muted-foreground">{product.models}</p>
+        <p className="mt-1 text-sm text-muted-foreground">{product.models}</p>
+        <div className="flex-1">{product.specs.length > 0 && <SpecList specs={product.specs} />}</div>
         <a
           href="#contact"
           className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-brand-deep transition-colors hover:text-navy"
@@ -137,5 +141,37 @@ function ProductCard({ product }: { product: Product }) {
         </a>
       </div>
     </motion.article>
+  );
+}
+
+/** Longer spec lists collapse to the first few rows, keeping cards in a row a similar height. */
+const VISIBLE_SPECS = 4;
+
+function SpecList({ specs }: { specs: Product["specs"] }) {
+  const [open, setOpen] = useState(false);
+  // Hiding a single row isn't worth the extra click.
+  const hidden = specs.length > VISIBLE_SPECS + 1 ? specs.length - VISIBLE_SPECS : 0;
+  return (
+    <div className="mt-4">
+      <dl className="divide-y divide-border/70 text-[0.8rem]">
+        {specs.map((spec, i) => (
+          <div key={i} className={cn("flex justify-between gap-3 py-1.5", !open && hidden > 0 && i >= VISIBLE_SPECS && "hidden")}>
+            <dt className="shrink-0 text-muted-foreground">{spec.label}</dt>
+            <dd className="text-right font-medium text-foreground">{spec.value}</dd>
+          </div>
+        ))}
+      </dl>
+      {hidden > 0 && (
+        <button
+          type="button"
+          onClick={() => setOpen((o) => !o)}
+          aria-expanded={open}
+          className="mt-1 inline-flex items-center gap-1 text-xs font-semibold text-muted-foreground transition-colors hover:text-navy"
+        >
+          {open ? "Fewer specs" : `${hidden} more spec${hidden === 1 ? "" : "s"}`}
+          <ChevronDown className={cn("size-3.5 transition-transform", open && "rotate-180")} />
+        </button>
+      )}
+    </div>
   );
 }

@@ -9,17 +9,18 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Reveal, SectionLabel } from "@/components/reveal";
 import { FacebookIcon, WhatsAppIcon } from "@/components/icons";
-import { company, productCategories } from "@/lib/site";
+import { telHref } from "@/lib/content/format";
+import type { Company, ProductCategory } from "@/lib/content/schema";
 import { cn } from "@/lib/utils";
 
-const channels = [
-  { icon: Phone, label: "Call us", value: company.phone, href: company.phoneHref },
+const channels = (company: Company) => [
+  { icon: Phone, label: "Call us", value: company.phone, href: telHref(company.phone) },
   { icon: WhatsAppIcon, label: "WhatsApp", value: company.phone, href: `https://wa.me/${company.whatsapp}` },
   { icon: Mail, label: "Email", value: company.email, href: `mailto:${company.email}` },
   { icon: FacebookIcon, label: "Facebook", value: company.facebook, href: company.facebookUrl },
 ];
 
-export function Contact() {
+export function Contact({ company, productCategories }: { company: Company; productCategories: ProductCategory[] }) {
   const [interest, setInterest] = useState(productCategories[0].label);
 
   // There is no backend yet, so enquiries are handed to WhatsApp with the form pre-filled.
@@ -56,7 +57,7 @@ export function Contact() {
           </Reveal>
 
           <div className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
-            {channels.map((c, i) => {
+            {channels(company).map((c, i) => {
               const Tag = c.href ? "a" : "div";
               return (
                 <Reveal key={c.label} delay={i * 0.08} x={-30} y={0}>

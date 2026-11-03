@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Barlow, Barlow_Condensed } from "next/font/google";
-import { SmoothScroll } from "@/components/smooth-scroll";
 import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
 
@@ -29,7 +28,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${barlow.variable} ${barlowCondensed.variable} antialiased`}
     >
       <body className="min-h-full overflow-x-clip">
-        <SmoothScroll>{children}</SmoothScroll>
+        {children}
         <Toaster position="top-center" theme="light" richColors />
       </body>
     </html>
