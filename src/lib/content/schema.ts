@@ -37,6 +37,8 @@ export const companySchema = z.object({
   facebook: text,
   facebookUrl: z.url(),
   mapUrl: z.url(),
+  /** What the embedded map centres on: a place name, address or "lat, lng". Falls back to the address. */
+  mapLocation: optionalText,
   address: z.array(text).min(1),
 });
 

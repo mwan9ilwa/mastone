@@ -10,6 +10,7 @@ const company: Company = {
   // No page URL in the profile yet, so this searches Facebook for the page name. Replace with the real page link.
   facebookUrl: "https://www.facebook.com/search/top?q=Mastone%20Investment%20Ltd",
   mapUrl: "https://www.google.com/maps/search/?api=1&query=Plot%2024603%2C%207070%20Road%2C%20Chibombo%2C%20Zambia",
+  mapLocation: "Chibombo, Zambia",
   address: ["Plot No. 24603, along 7070 Road", "Chibombo District, Lusaka, Zambia"],
 };
 

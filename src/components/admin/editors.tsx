@@ -47,7 +47,7 @@ export function CompanyEditor({ initial }: EditorProps<"company">) {
   return (
     <Shell sectionKey="company" initial={initial}>
       {(c, set) => {
-        const field = (key: Exclude<keyof typeof c, "address">) => ({ value: c[key], onChange: (v: string) => set({ ...c, [key]: v }) });
+        const field = (key: Exclude<keyof typeof c, "address">) => ({ value: c[key] ?? "", onChange: (v: string) => set({ ...c, [key]: v }) });
         return (
           <Panel>
             <FieldGrid>
@@ -58,7 +58,14 @@ export function CompanyEditor({ initial }: EditorProps<"company">) {
               <TextField label="Email" type="email" {...field("email")} />
               <TextField label="Facebook page name" {...field("facebook")} />
               <TextField label="Facebook page link" {...field("facebookUrl")} className="sm:col-span-2" />
-              <TextField label="Google Maps link" {...field("mapUrl")} className="sm:col-span-2" />
+              <TextField label="Google Maps link" {...field("mapUrl")} hint="Where “Open in Google Maps” and the footer link go" className="sm:col-span-2" />
+              <TextField
+                label="Map location"
+                {...field("mapLocation")}
+                placeholder="Chibombo, Zambia  or  -14.6567, 28.0733"
+                hint="What the map on the contact section shows: a place name, an address, or exact coordinates (right-click the spot in Google Maps to copy them). Leave blank to use the address."
+                className="sm:col-span-2"
+              />
             </FieldGrid>
             <StringListField label="Address lines" values={c.address} onChange={(address) => set({ ...c, address })} />
           </Panel>

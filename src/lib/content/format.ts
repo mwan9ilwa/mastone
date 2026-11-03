@@ -1,3 +1,9 @@
+import type { Company } from "./schema";
+
+/** Google's keyless embed: accepts a place name, an address or "lat, lng". */
+export const mapEmbedUrl = (company: Company) =>
+  `https://maps.google.com/maps?q=${encodeURIComponent(company.mapLocation ?? company.address.join(", "))}&z=14&output=embed`;
+
 export const telHref = (phone: string) => `tel:${phone.replace(/[^\d+]/g, "")}`;
 
 /**

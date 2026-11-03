@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Mail, MapPin, Phone, Send } from "lucide-react";
+import { ArrowUpRight, Mail, MapPin, Phone, Send } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Reveal, SectionLabel } from "@/components/reveal";
 import { FacebookIcon, WhatsAppIcon } from "@/components/icons";
-import { telHref } from "@/lib/content/format";
+import { mapEmbedUrl, telHref } from "@/lib/content/format";
 import type { Company, ProductCategory } from "@/lib/content/schema";
 import { cn } from "@/lib/utils";
 
@@ -149,6 +149,27 @@ export function Contact({ company, productCategories }: { company: Company; prod
           </form>
         </Reveal>
       </div>
+
+      <Reveal delay={0.1} className="relative mx-auto mt-16 max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="relative overflow-hidden rounded-[2rem] bg-white shadow-xl shadow-navy/5 ring-1 ring-border">
+          <iframe
+            title={`Map showing the location of ${company.name}`}
+            src={mapEmbedUrl(company)}
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+            allowFullScreen
+            className="block h-80 w-full border-0 sm:h-[26rem]"
+          />
+          <a
+            href={company.mapUrl}
+            target="_blank"
+            rel="noopener"
+            className="absolute top-3 right-3 hidden sm:inline-flex items-center gap-1.5 rounded-full bg-navy-900 px-4 py-2.5 text-sm font-semibold text-white shadow-lg transition-colors hover:bg-brand hover:text-navy-900"
+          >
+            Open in Google Maps <ArrowUpRight className="size-4" />
+          </a>
+        </div>
+      </Reveal>
     </section>
   );
 }
