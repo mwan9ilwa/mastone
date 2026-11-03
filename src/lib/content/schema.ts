@@ -32,6 +32,8 @@ export const companySchema = z.object({
   name: text,
   tagline: text,
   phone: text,
+  /** Optional second line, shown beside the main number. */
+  secondaryPhone: optionalText,
   whatsapp: z.string().trim().regex(/^\d{8,15}$/, "Digits only, with country code (e.g. 260979106666)"),
   email: z.email(),
   facebook: text,
@@ -60,6 +62,8 @@ export const productSchema = z.object({
   models: text,
   image,
   brand: text,
+  /** WhatsApp/phone number for enquiries about this product; overrides the category's. */
+  enquiryPhone: optionalText,
   /** Technical specifications, shown in order on the product card. */
   specs: z.array(specSchema).default([]),
 });
@@ -68,6 +72,8 @@ export const productCategorySchema = z.object({
   id: text,
   label: text,
   blurb: text,
+  /** WhatsApp/phone number for enquiries about this category. Falls back to the company WhatsApp number. */
+  enquiryPhone: optionalText,
   products: z.array(productSchema),
 });
 

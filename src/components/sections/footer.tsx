@@ -58,7 +58,13 @@ export function Footer({
           <ul className="mt-5 space-y-4 text-sm text-white/70">
             <li className="flex gap-3">
               <Phone className="size-4 shrink-0 text-brand" />
-              <a href={telHref(company.phone)} className="hover:text-white">{company.phone}</a>
+              <span className="grid gap-1">
+                {[company.phone, company.secondaryPhone].filter(Boolean).map((phone) => (
+                  <a key={phone} href={telHref(phone!)} className="hover:text-white">
+                    {phone}
+                  </a>
+                ))}
+              </span>
             </li>
             <li className="flex gap-3">
               <Mail className="size-4 shrink-0 text-brand" />

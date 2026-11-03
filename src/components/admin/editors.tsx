@@ -54,6 +54,7 @@ export function CompanyEditor({ initial }: EditorProps<"company">) {
               <TextField label="Company name" {...field("name")} />
               <TextField label="Tagline" {...field("tagline")} />
               <TextField label="Phone" {...field("phone")} placeholder="+260 979 106 666" />
+              <TextField label="Second phone (optional)" {...field("secondaryPhone")} placeholder="+260 972 249 991" />
               <TextField label="WhatsApp number" {...field("whatsapp")} hint="Digits only, with country code" placeholder="260979106666" />
               <TextField label="Email" type="email" {...field("email")} />
               <TextField label="Facebook page name" {...field("facebook")} />
@@ -133,6 +134,7 @@ export function ProductsEditor({ initial }: EditorProps<"productCategories">) {
           items={categories}
           onChange={set}
           addLabel="Add category"
+          collapsible
           title={(c) => `${c.label} · ${c.products.length} product${c.products.length === 1 ? "" : "s"}`}
           create={() => ({ id: crypto.randomUUID().slice(0, 8), label: "", blurb: "", products: [] })}
           render={(c, patch) => (
@@ -140,6 +142,14 @@ export function ProductsEditor({ initial }: EditorProps<"productCategories">) {
               <FieldGrid>
                 <TextField label="Category name" value={c.label} onChange={(label) => patch({ label })} />
                 <TextField label="Short description" value={c.blurb} onChange={(blurb) => patch({ blurb })} />
+                <TextField
+                  label="Enquiry number (optional)"
+                  value={c.enquiryPhone ?? ""}
+                  onChange={(enquiryPhone) => patch({ enquiryPhone })}
+                  placeholder="e.g. +260 972 249 991"
+                  hint="WhatsApp and call enquiries for products in this category go here. Leave blank to use the main WhatsApp number."
+                  className="sm:col-span-2"
+                />
               </FieldGrid>
               <div className="grid gap-2 rounded-xl bg-secondary/60 p-3">
                 <Label>Products</Label>
@@ -147,12 +157,21 @@ export function ProductsEditor({ initial }: EditorProps<"productCategories">) {
                   items={c.products}
                   onChange={(products) => patch({ products })}
                   addLabel="Add product"
+                  collapsible
                   title={(p) => [p.brand, p.name].filter(Boolean).join(" ")}
                   create={() => ({ name: "", models: "", image: "", brand: "", specs: [] })}
                   render={(p, patchProduct) => (
                     <FieldGrid>
                       <TextField label="Model / name" value={p.name} onChange={(name) => patchProduct({ name })} placeholder="SWE210" />
                       <TextField label="Brand" value={p.brand} onChange={(brand) => patchProduct({ brand })} />
+                      <TextField
+                        label="Enquiry number (optional)"
+                        value={p.enquiryPhone ?? ""}
+                        onChange={(enquiryPhone) => patchProduct({ enquiryPhone })}
+                        placeholder={c.enquiryPhone ?? "Uses the category / main number"}
+                        hint="Overrides the category’s enquiry number for this product only."
+                        className="sm:col-span-2"
+                      />
                       <TextField
                         label="Type / description"
                         value={p.models}

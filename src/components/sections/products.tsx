@@ -3,11 +3,11 @@
 import { useState } from "react";
 import Image from "next/image";
 import { motion, useMotionTemplate, useMotionValue, useSpring } from "motion/react";
-import { ArrowUpRight, ChevronDown } from "lucide-react";
+import { ArrowUpRight, ChevronDown, Phone } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Reveal, SectionLabel } from "@/components/reveal";
-import { isUploaded } from "@/lib/content/format";
+import { isUploaded, telHref, whatsappHref } from "@/lib/content/format";
 import type { Product, ProductCategory } from "@/lib/content/schema";
 import { cn } from "@/lib/utils";
 
@@ -71,7 +71,7 @@ export function Products({ productCategories }: { productCategories: ProductCate
                 variants={{ show: { transition: { staggerChildren: 0.08 } } }}
               >
                 {c.products.map((p) => (
-                  <ProductCard key={p.name} product={p} />
+                  <ProductCard key={p.name} product={p} enquiryPhone={p.enquiryPhone ?? c.enquiryPhone} />
                 ))}
               </motion.div>
             </TabsContent>
@@ -82,7 +82,7 @@ export function Products({ productCategories }: { productCategories: ProductCate
   );
 }
 
-function ProductCard({ product }: { product: Product }) {
+function ProductCard({ product, enquiryPhone }: { product: Product; enquiryPhone?: string }) {
   const rx = useMotionValue(0);
   const ry = useMotionValue(0);
   const gx = useMotionValue(50);
@@ -132,13 +132,24 @@ function ProductCard({ product }: { product: Product }) {
         <h3 className="font-heading text-2xl font-bold tracking-wide text-navy uppercase">{product.name}</h3>
         <p className="mt-1 text-sm text-muted-foreground">{product.models}</p>
         <div className="flex-1">{product.specs.length > 0 && <SpecList specs={product.specs} />}</div>
-        <a
-          href="#contact"
-          className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-brand-deep transition-colors hover:text-navy"
-        >
-          Enquire now
-          <ArrowUpRight className="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-        </a>
+        <div className="mt-5 flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
+          {/* Products with their own enquiry line go straight to it; the rest use the quote form. */}
+          <a
+            href={enquiryPhone ? whatsappHref(enquiryPhone, `Hello Mastone, I'd like a quote for the ${product.brand} ${product.name}.`) : "#contact"}
+            target={enquiryPhone ? "_blank" : undefined}
+            rel="noopener"
+            className="inline-flex items-center gap-1.5 text-sm font-semibold text-brand-deep transition-colors hover:text-navy"
+          >
+            Enquire now
+            <ArrowUpRight className="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+          </a>
+          {enquiryPhone && (
+            <a href={telHref(enquiryPhone)} className="inline-flex items-center gap-1.5 text-xs font-medium text-muted-foreground transition-colors hover:text-navy">
+              <Phone className="size-3.5" />
+              {enquiryPhone}
+            </a>
+          )}
+        </div>
       </div>
     </motion.article>
   );

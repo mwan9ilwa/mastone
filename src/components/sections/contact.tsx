@@ -9,12 +9,15 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Reveal, SectionLabel } from "@/components/reveal";
 import { FacebookIcon, WhatsAppIcon } from "@/components/icons";
-import { mapEmbedUrl, telHref } from "@/lib/content/format";
+import { mapEmbedUrl, telHref, whatsappHref } from "@/lib/content/format";
 import type { Company, ProductCategory } from "@/lib/content/schema";
 import { cn } from "@/lib/utils";
 
 const channels = (company: Company) => [
   { icon: Phone, label: "Call us", value: company.phone, href: telHref(company.phone) },
+  ...(company.secondaryPhone
+    ? [{ icon: Phone, label: "Call us (alternative line)", value: company.secondaryPhone, href: telHref(company.secondaryPhone) }]
+    : []),
   { icon: WhatsAppIcon, label: "WhatsApp", value: company.phone, href: `https://wa.me/${company.whatsapp}` },
   { icon: Mail, label: "Email", value: company.email, href: `mailto:${company.email}` },
   { icon: FacebookIcon, label: "Facebook", value: company.facebook, href: company.facebookUrl },
@@ -32,12 +35,15 @@ export function Contact({ company, productCategories }: { company: Company; prod
       `Name: ${data.get("name")}`,
       `Phone: ${data.get("phone")}`,
       data.get("company") ? `Company: ${data.get("company")}` : null,
+      data.get("position") ? `Position: ${data.get("position")}` : null,
       `Interested in: ${interest}`,
       `Message: ${data.get("message")}`,
     ]
       .filter(Boolean)
       .join("\n");
-    window.open(`https://wa.me/${company.whatsapp}?text=${encodeURIComponent(text)}`, "_blank", "noopener");
+    // Categories with their own enquiry line (e.g. generators) route there; everything else goes to the main number.
+    const enquiryPhone = productCategories.find((c) => c.label === interest)?.enquiryPhone ?? company.whatsapp;
+    window.open(whatsappHref(enquiryPhone, text), "_blank", "noopener");
     toast.success("Opening WhatsApp", { description: "Your enquiry is ready to send to our sales team." });
     e.currentTarget.reset();
   };
@@ -68,7 +74,7 @@ export function Contact({ company, productCategories }: { company: Company; prod
                       c.href && "hover:-translate-y-0.5 hover:shadow-lg hover:ring-brand/50"
                     )}
                   >
-                    <span className="grid size-12 shrink-0 place-items-center rounded-xl bg-navy-900 text-brand transition-colors group-hover:bg-brand group-hover:text-navy-900">
+                    <span className="grid size-12 shrink-0 place-items-center rounded-xl text-brand transition-colors group-hover:bg-brand group-hover:text-navy-900">
                       <c.icon className="size-5" />
                     </span>
                     <span className="min-w-0">
@@ -79,9 +85,9 @@ export function Contact({ company, productCategories }: { company: Company; prod
                 </Reveal>
               );
             })}
-            <Reveal delay={0.32} x={-30} y={0} className="sm:col-span-2 lg:col-span-1">
+            {/* <Reveal delay={0.32} x={-30} y={0} className="sm:col-span-2 lg:col-span-1">
               <div className="flex items-start gap-4 rounded-2xl bg-navy-900 p-4 text-white">
-                <span className="grid size-12 shrink-0 place-items-center rounded-xl bg-brand text-navy-900">
+                <span className="grid size-12 shrink-0 place-items-center rounded-xl text-brand">
                   <MapPin className="size-5" />
                 </span>
                 <span>
@@ -93,7 +99,7 @@ export function Contact({ company, productCategories }: { company: Company; prod
                   ))}
                 </span>
               </div>
-            </Reveal>
+            </Reveal> */}
           </div>
         </div>
 
@@ -105,7 +111,8 @@ export function Contact({ company, productCategories }: { company: Company; prod
             <div className="mt-8 grid gap-5 sm:grid-cols-2">
               <Field label="Full name" name="name" required placeholder="John Banda" />
               <Field label="Phone" name="phone" type="tel" required placeholder="+260 ..." />
-              <Field label="Company (optional)" name="company" placeholder="Company name" className="sm:col-span-2" />
+              <Field label="Company (optional)" name="company" placeholder="Company name" />
+              <Field label="Position (optional)" name="position" placeholder="e.g. Procurement Manager" />
             </div>
 
             <fieldset className="mt-6">

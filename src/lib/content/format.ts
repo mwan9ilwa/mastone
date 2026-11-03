@@ -4,6 +4,10 @@ import type { Company } from "./schema";
 export const mapEmbedUrl = (company: Company) =>
   `https://maps.google.com/maps?q=${encodeURIComponent(company.mapLocation ?? company.address.join(", "))}&z=14&output=embed`;
 
+/** wa.me link for any phone number, optionally with a pre-filled message. */
+export const whatsappHref = (phone: string, text?: string) =>
+  `https://wa.me/${phone.replace(/\D/g, "")}${text ? `?text=${encodeURIComponent(text)}` : ""}`;
+
 export const telHref = (phone: string) => `tel:${phone.replace(/[^\d+]/g, "")}`;
 
 /**

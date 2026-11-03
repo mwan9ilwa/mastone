@@ -4,6 +4,7 @@ const company: Company = {
   name: "Mastone Investments Ltd",
   tagline: "Must be one, must to be number one",
   phone: "+260 979 106 666",
+  secondaryPhone: "+260 972 249 991",
   whatsapp: "260979106666",
   email: "mastoneinvestmentltd@gmail.com",
   facebook: "Mastone Investment Ltd",
@@ -102,6 +103,7 @@ const productCategories: ProductCategory[] = [
         models: "Mining excavator",
         image: "/images/products/excavator.png",
         brand: "SUNWARD",
+        enquiryPhone: "+260 972 249 991",
         specs: specs(
           ["Operating weight", "38,500 kg"],
           ["Bucket capacity", "1.8 m³"],
@@ -128,6 +130,7 @@ const productCategories: ProductCategory[] = [
         models: "Mining excavator",
         image: "/images/products/excavator.png",
         brand: "SUNWARD",
+        enquiryPhone: "+260 972 249 991",
         specs: specs(
           ["Operating weight", "93,800 kg"],
           ["Bucket capacity", "6.5 m³"],
@@ -162,6 +165,7 @@ const productCategories: ProductCategory[] = [
         models: "Surface rock drilling rig",
         image: "/images/products/rock-drill.png",
         brand: "SUNWARD",
+        enquiryPhone: "+260 972 249 991",
         specs: specs(
           ["Operating weight", "22,500 kg"],
           ["Engine", "Cummins QSL8.9-C360-30"],
@@ -314,6 +318,7 @@ const productCategories: ProductCategory[] = [
   {
     id: "power",
     label: "Power Generation",
+    enquiryPhone: "+260 972 249 991",
     blurb: "WEICHAI diesel generator sets from 41 kVA to 1,250 kVA.",
     products: [
       { name: "Silent Generator Set", models: "Canopy type · low-noise enclosure", image: "/images/products/genset-silent.png", brand: "WEICHAI", specs: [] },
