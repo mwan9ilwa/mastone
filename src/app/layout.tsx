@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Barlow, Barlow_Condensed } from "next/font/google";
+import { MetaPixel } from "@/components/meta-pixel";
 import { Toaster } from "@/components/ui/sonner";
 import { siteDescription, siteKeywords, siteName, siteTitle, siteUrl } from "@/lib/site";
 import "./globals.css";
@@ -65,6 +66,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="min-h-full overflow-x-clip">
         {children}
         <Toaster position="top-center" theme="light" richColors />
+        <MetaPixel />
       </body>
     </html>
   );

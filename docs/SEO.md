@@ -13,6 +13,7 @@ The technical SEO setup is in place, but the live sitemap currently uses a Verce
 | `sitemap.xml` with product images | `src/app/sitemap.ts` | Every product photo, so products can appear in Google Images |
 | Structured data (JSON-LD) | `src/lib/json-ld.ts` | Business name, address, phones, email, map, brands and the full product catalogue |
 | Social share image | `src/app/opengraph-image.tsx` | Preview card on WhatsApp, Facebook, LinkedIn and X |
+| Meta Pixel | `src/components/meta-pixel.tsx` | Records PageView events on public pages and client-side navigation |
 | One stable `<h1>`, alt text on images | `src/app/page.tsx`, sections | Clear page topic and image context |
 | `noindex` on the dashboard | `src/app/admin/layout.tsx` | Keeps admin pages out of Google |
 
