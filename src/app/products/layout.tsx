@@ -1,7 +1,6 @@
 import { Navbar } from "@/components/navbar";
 import { ScrollProgress } from "@/components/scroll-progress";
 import { SmoothScroll } from "@/components/smooth-scroll";
-import { WhatsAppButton } from "@/components/whatsapp-button";
 import { Footer } from "@/components/sections/footer";
 import { buildCatalog } from "@/lib/catalog";
 import { getContent } from "@/lib/content/store";
@@ -15,7 +14,7 @@ export default async function ProductsLayout({ children }: LayoutProps<"/product
       <Navbar phone={content.company.phone} home={false} />
       <main>{children}</main>
       <Footer company={content.company} brands={content.brands} catalog={buildCatalog(content.productCategories)} home={false} />
-      <WhatsAppButton whatsapp={content.company.whatsapp} />
+      {/* <WhatsAppButton whatsapp={content.company.whatsapp} /> */}
     </SmoothScroll>
   );
 }

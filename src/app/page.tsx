@@ -1,7 +1,6 @@
 import { Navbar } from "@/components/navbar";
 import { ScrollProgress } from "@/components/scroll-progress";
 import { SmoothScroll } from "@/components/smooth-scroll";
-import { WhatsAppButton } from "@/components/whatsapp-button";
 import { HeroSlider } from "@/components/sections/hero-slider";
 import { BrandMarquee } from "@/components/sections/brand-marquee";
 import { About } from "@/components/sections/about";
@@ -44,7 +43,7 @@ export default async function Home() {
         <Contact company={content.company} productCategories={content.productCategories} />
       </main>
       <Footer company={content.company} brands={content.brands} catalog={catalog} />
-      <WhatsAppButton whatsapp={content.company.whatsapp} />
+      {/* <WhatsAppButton whatsapp={content.company.whatsapp} /> */}
     </SmoothScroll>
   );
 }

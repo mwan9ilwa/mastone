@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Barlow, Barlow_Condensed } from "next/font/google";
+import Script from "next/script";
 import { MetaPixel } from "@/components/meta-pixel";
 import { Toaster } from "@/components/ui/sonner";
 import { siteDescription, siteKeywords, siteName, siteTitle, siteUrl } from "@/lib/site";
@@ -67,6 +68,14 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         {children}
         <Toaster position="top-center" theme="light" richColors />
         <MetaPixel />
+        <Script
+          src="https://cdn.botpress.cloud/webchat/v5.0/inject.js"
+          strategy="beforeInteractive"
+        />
+        <Script
+          src="https://files.bpcontent.cloud/2026/11/05/09/20261105093908-4L8VQJE6.js"
+          strategy="beforeInteractive"
+        />
       </body>
     </html>
   );
