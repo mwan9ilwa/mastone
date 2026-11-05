@@ -1,8 +1,8 @@
 # SEO guide
 
-**Goal:** when someone in Zambia searches Google for one of our products or categories (e.g. "SUNWARD SWE210", "YTO tractors Zambia", "diesel generator Lusaka"), this site appears in the top 5 results.
+**Goal:** help people searching for Mastone and the equipment it sells find the official site. Google decides ranking; no technical setting can guarantee first place, especially for broad searches such as "tractors".
 
-No one can guarantee a Google position. The steps below are the ones that decide it, in order of impact. The code side is mostly done; most of what remains is outside the code: Google Search Console, a Google Business Profile, content and links.
+The technical SEO setup is in place, but the live sitemap currently uses a Vercel hostname instead of the official domain. The code now defaults to `https://www.mastoneinvestments.com`; redeploy before submitting the sitemap. Search Console, a complete Google Business Profile, useful local content and reputable links are the main remaining work.
 
 ## 1. What the site already does
 
@@ -22,30 +22,30 @@ The sitemap and structured data are built from dashboard content, so new or rena
 
 ### 2.1 Set the domain
 
-Set `NEXT_PUBLIC_SITE_URL` to the live domain, e.g. `https://mastone.co.zm` (no trailing slash), then rebuild and redeploy. It is read **at build time**.
+The site defaults to `https://www.mastoneinvestments.com`. If `NEXT_PUBLIC_SITE_URL` is set in the deployment environment, make sure it is exactly `https://www.mastoneinvestments.com` (no trailing slash), then rebuild and redeploy. It is read **at build time**.
 
 - **Vercel:** Settings → Environment Variables.
 - **Cloudflare:** add it to the build environment (and `.dev.vars` for `npm run preview:cf`).
 
-Until it's set, canonical links, the sitemap and share previews point at `localhost`.
-
-A `.zm` domain (`.co.zm` or `.zm`) is a strong signal to Google that the business serves Zambia. Use one if possible.
+After deploying, check that `/robots.txt`, `/sitemap.xml`, and each page's canonical URL use `www.mastoneinvestments.com`, not a Vercel preview hostname.
 
 ### 2.2 Google Search Console
 
-1. Go to <https://search.google.com/search-console> and add the domain as a **URL prefix** property.
-2. Choose the **HTML tag** method. Copy only the `content="…"` value into `GOOGLE_SITE_VERIFICATION`, redeploy, then click **Verify**.
-3. **Sitemaps** → submit `sitemap.xml`.
-4. **URL Inspection** → paste the homepage URL → **Request indexing**.
-5. Check **Pages** after a few days to confirm the homepage is indexed.
+1. Open <https://search.google.com/search-console> and add a **Domain** property: `mastoneinvestments.com` (no `https://` and no `www`).
+2. Google will provide a DNS TXT record. Add that record with the domain's DNS provider, preserving the full value, then return to Search Console and click **Verify**. DNS changes can take time to propagate. Domain properties include both `www` and non-`www` URLs and require DNS verification.
+3. In the verified property, open **Sitemaps** and submit `https://www.mastoneinvestments.com/sitemap.xml`.
+4. Use **URL Inspection** for `https://www.mastoneinvestments.com/` and `https://www.mastoneinvestments.com/products/agriculture`; check that Google-selected canonical URLs use the official domain and request indexing.
+5. Check **Indexing → Pages** and **Performance → Search results** over time. Indexing and ranking are not immediate or guaranteed.
+
+If you prefer the HTML-tag method, add a separate **URL-prefix** property for `https://www.mastoneinvestments.com/`. Copy its verification token into `GOOGLE_SITE_VERIFICATION`, redeploy, and then click **Verify**. DNS verification of the Domain property is generally simpler because it covers all subdomains and protocols.
 
 ### 2.3 Bing Webmaster Tools
 
 At <https://www.bing.com/webmasters>, either import the Search Console property (quickest) or use the meta tag method with `BING_SITE_VERIFICATION`. Submit the sitemap there too. Bing also feeds DuckDuckGo and some AI assistants.
 
-### 2.4 Google Business Profile (most important for Zambia)
+### 2.4 Google Business Profile
 
-For searches with local intent ("excavator Lusaka", "tractors near me"), the Google Maps listing at the top of the results usually matters more than the website ranking.
+For local searches ("excavator Lusaka", "tractors near me"), a complete and accurate Maps listing can improve local visibility, but does not guarantee a particular position.
 
 1. Create the profile at <https://business.google.com> for **Mastone Investments Ltd**, Plot No. 24603, along 7070 Road, Chibombo.
 2. Category: *Construction machine dealer*. Add *Tractor dealer*, *Generator shop*, *Truck dealer* and *Machine repair service* as extra categories.
@@ -129,18 +129,18 @@ Track these in Search Console (**Performance → Queries**, filtered to **Countr
 | Power generation | WEICHAI generator Zambia, diesel generator Lusaka, silent generator Zambia, 100 kVA generator price |
 | Brand / local | Mastone Investments, equipment dealer Chibombo, heavy machinery Lusaka |
 
-## 5. What to expect
+## 5. Ranking priorities
 
-- **Brand name searches** ("Mastone Investments"): top result within days to a few weeks of indexing.
-- **Exact model numbers** (e.g. "SWE385F Zambia"): competition is low and each model now has its own page, so the top 5 is realistic within 1–3 months of indexing.
-- **Broad category searches** ("excavator Zambia", "generator Lusaka"): the hardest. Expect 3–6+ months, and it depends mostly on the Business Profile, reviews and links in section 3.
+- **Searches for "Mastone":** keep the exact business name and official domain consistent across the site, Google Business Profile, social profiles and reputable business directories. Request indexing after deployment.
+- **Searches for tractors:** the Agriculture catalogue route stays `/products/agriculture`, while its page title and heading now explicitly say "YTO Tractors". Keep each tractor model's name, accurate specifications, availability and useful Zambia-specific details up to date.
+- **Broad searches such as "tractors":** are highly competitive and may have mixed search intent. Build useful, original information, earn relevant links (especially from manufacturer dealer pages), and keep the Business Profile current. No one can guarantee a first-place result.
 
-Review Search Console monthly. Queries with many impressions but a low position are the next pages to improve.
+Review Search Console monthly. Improve pages for relevant queries that get impressions but few clicks; allow time for Google to recrawl and reassess updates.
 
 ## 6. Environment variables
 
 | Variable | Required | Purpose |
 | --- | --- | --- |
-| `NEXT_PUBLIC_SITE_URL` | Yes, for production | Live domain used in canonical URLs, sitemap, robots.txt, share previews and structured data. Read at build time. |
-| `GOOGLE_SITE_VERIFICATION` | Optional | Google Search Console HTML-tag code |
+| `NEXT_PUBLIC_SITE_URL` | Optional | Overrides the official domain default; used in canonical URLs, sitemap, robots.txt, share previews and structured data. Read at build time. |
+| `GOOGLE_SITE_VERIFICATION` | Optional | Google Search Console HTML-tag token for a URL-prefix property; DNS TXT verification is recommended for the Domain property. |
 | `BING_SITE_VERIFICATION` | Optional | Bing Webmaster Tools `msvalidate.01` code |

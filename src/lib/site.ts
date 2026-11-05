@@ -9,19 +9,18 @@ export const navLinks = [
 
 /**
  * Public origin of the site, used for canonical URLs, the sitemap, Open Graph tags and structured data.
- * Set NEXT_PUBLIC_SITE_URL to the production domain (e.g. https://mastone.co.zm). It is read at build time.
+ * Set NEXT_PUBLIC_SITE_URL to override the production domain. It is read at build time.
  */
 export const siteUrl = (
   process.env.NEXT_PUBLIC_SITE_URL ||
-  (process.env.VERCEL_PROJECT_PRODUCTION_URL && `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`) ||
-  "http://localhost:3000"
+  "https://www.mastoneinvestments.com"
 ).replace(/\/+$/, "");
 
 /** Absolute URL for a site path or an already-absolute URL. */
 export const absoluteUrl = (path: string) => new URL(path, `${siteUrl}/`).toString();
 
 export const siteName = "Mastone Investments Ltd";
-export const siteTitle = "Mastone Investments Ltd | Equipment & Power Solutions in Zambia";
+export const siteTitle = "Mastone Investments | YTO Tractors, SUNWARD Equipment & Generators in Zambia";
 export const siteDescription =
   "Mastone Investments Ltd supplies SUNWARD construction and mining machinery, YTO tractors, WEICHAI and SINOTRUK trucks, generators and premium engine oils across Zambia, backed by parts and after-sales support.";
 

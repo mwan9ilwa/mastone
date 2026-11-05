@@ -27,6 +27,8 @@ Section headings and the parallax banner text are still in the components; every
 
 Sign in at `/admin` with `ADMIN_PASSWORD`. Each section (company details, hero slides, products, brands, about, services, industries) has its own editor with **Save**, **Discard** and **Restore original**. Images can be uploaded (PNG, JPG, WebP, AVIF or GIF, up to 4 MB) or referenced by path, e.g. `/images/products/excavator.png`.
 
+See the [website management guide](docs/ADMIN.md) for step-by-step instructions.
+
 ## Deploying
 
 Both targets need a [Turso](https://turso.tech) database (free tier is plenty), because libSQL is reachable from both runtimes over HTTP:
@@ -45,7 +47,7 @@ The tables are created automatically on first use.
 | `SESSION_SECRET` | Signs the login cookie (`openssl rand -base64 32`) |
 | `TURSO_DATABASE_URL` | `libsql://…` URL of the Turso database |
 | `TURSO_AUTH_TOKEN` | Turso access token |
-| `NEXT_PUBLIC_SITE_URL` | Live domain, e.g. `https://mastone.co.zm`. Needed at build time for SEO (canonical URLs, sitemap, share previews) |
+| `NEXT_PUBLIC_SITE_URL` | Optional override for the live domain; defaults to `https://www.mastoneinvestments.com`. Used at build time for SEO (canonical URLs, sitemap, share previews) |
 | `GOOGLE_SITE_VERIFICATION`, `BING_SITE_VERIFICATION` | Optional search console verification codes |
 
 After the first deploy, follow the launch checklist in [docs/SEO.md](docs/SEO.md) (Search Console, Google Business Profile, etc.).

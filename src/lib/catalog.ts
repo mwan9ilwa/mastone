@@ -80,12 +80,17 @@ export const clip = (text: string, max = 155) =>
 export function categoryCopy(category: CatalogCategory) {
   const brands = categoryBrands(category);
   const brandPrefix = brands.length && brands.length <= 2 ? `${brands.join(" & ")} ` : "";
+  const isAgriculture = category.id === "agriculture";
+  const categoryName = isAgriculture ? "YTO Tractors" : category.label;
+  const intro = isAgriculture
+    ? `${category.blurb} Mastone Investments supplies YTO tractors for farms across Zambia, with delivery, genuine spare parts, maintenance and after-sales support.`
+    : `${category.blurb} Mastone Investments supplies ${listJoin(brands)} ${category.label.toLowerCase()} across Zambia, with delivery, genuine spare parts, maintenance and after-sales support.`;
   return {
-    title: `${brandPrefix}${category.label} for Sale in Zambia`,
-    heading: `${category.label} in Zambia`,
-    intro: `${category.blurb} Mastone Investments supplies ${listJoin(brands)} ${category.label.toLowerCase()} across Zambia, with delivery, genuine spare parts, maintenance and after-sales support.`,
+    title: `${isAgriculture ? "" : brandPrefix}${categoryName} for Sale in Zambia`,
+    heading: `${categoryName} in Zambia`,
+    intro,
     description: clip(
-      `${category.label} for sale in Zambia: ${listJoin(category.products.slice(0, 4).map((p) => p.fullName))}${
+      `${categoryName} for sale in Zambia: ${listJoin(category.products.slice(0, 4).map((p) => p.fullName))}${
         category.products.length > 4 ? " and more" : ""
       }. ${category.blurb}`
     ),
