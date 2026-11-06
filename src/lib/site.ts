@@ -20,9 +20,9 @@ export const siteUrl = (
 export const absoluteUrl = (path: string) => new URL(path, `${siteUrl}/`).toString();
 
 export const siteName = "Mastone Investments Ltd";
-export const siteTitle = "Mastone Investments | YTO Tractors, SUNWARD Equipment & Generators in Zambia";
+export const siteTitle = "Mastone Investments | Equipment in Zambia";
 export const siteDescription =
-  "Mastone Investments Ltd supplies SUNWARD construction and mining machinery, YTO tractors, WEICHAI and SINOTRUK trucks, generators and premium engine oils across Zambia, backed by parts and after-sales support.";
+  "Mastone supplies SUNWARD machinery, YTO tractors, trucks and generators in Zambia, with parts and after-sales support.";
 
 export const siteKeywords = [
   "Mastone Investments",
