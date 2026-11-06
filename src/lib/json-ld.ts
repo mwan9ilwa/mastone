@@ -59,19 +59,6 @@ export function homeJsonLd(content: SiteContent) {
             name: category.label,
             description: category.blurb,
             url: absoluteUrl(category.href),
-            itemListElement: category.products.map((product) => ({
-              "@type": "Offer",
-              areaServed: "ZM",
-              itemOffered: {
-                "@type": "Product",
-                name: product.fullName,
-                url: absoluteUrl(product.href),
-                model: product.models,
-                brand: { "@type": "Brand", name: product.brand },
-                image: absoluteUrl(product.image),
-                category: category.label,
-              },
-            })),
           })),
         },
       },
@@ -141,39 +128,19 @@ export function productJsonLd(product: CatalogProduct, category: CatalogCategory
   const url = absoluteUrl(product.href);
   return {
     "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "Product",
-        "@id": `${url}#product`,
-        url,
-        name: product.fullName,
-        description,
-        model: product.models,
-        category: category.label,
-        image: absoluteUrl(product.image),
-        brand: { "@type": "Brand", name: product.brand },
-        ...(product.specs.length && {
-          additionalProperty: product.specs.map((s) => ({ "@type": "PropertyValue", name: s.label, value: s.value })),
-        }),
-        // No public price, so no Offer. Adding prices would make these eligible for Google's product rich results.
-        manufacturer: { "@type": "Organization", name: product.brand },
-      },
-      {
-        "@type": "WebPage",
-        "@id": `${url}#page`,
-        url,
-        name: product.fullName,
-        inLanguage: "en",
-        isPartOf: { "@id": `${siteUrl}/#website` },
-        mainEntity: { "@id": `${url}#product` },
-        breadcrumb: breadcrumbList([
-          { name: "Home", path: "/" },
-          { name: "Products", path: "/products" },
-          { name: category.label, path: category.href },
-          { name: product.fullName, path: product.href },
-        ]),
-      },
-    ],
+    "@type": "WebPage",
+    "@id": `${url}#page`,
+    url,
+    name: product.fullName,
+    description,
+    inLanguage: "en",
+    isPartOf: { "@id": `${siteUrl}/#website` },
+    breadcrumb: breadcrumbList([
+      { name: "Home", path: "/" },
+      { name: "Products", path: "/products" },
+      { name: category.label, path: category.href },
+      { name: product.fullName, path: product.href },
+    ]),
   };
 }
 
