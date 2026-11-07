@@ -48,8 +48,8 @@ At <https://www.bing.com/webmasters>, either import the Search Console property 
 
 For local searches ("excavator Lusaka", "tractors near me"), a complete and accurate Maps listing can improve local visibility, but does not guarantee a particular position.
 
-1. Create the profile at <https://business.google.com> for **Mastone Investments Ltd**, Plot No. 24603, along 7070 Road, Chibombo.
-2. Category: *Construction machine dealer*. Add *Tractor dealer*, *Generator shop*, *Truck dealer* and *Machine repair service* as extra categories.
+1. Mastone has a verified profile. Update that existing listing at <https://business.google.com>; do not create a duplicate.
+2. Choose the most accurate primary category (for example, *Construction machine dealer*). Add relevant secondary categories such as *Tractor dealer*, *Generator shop*, *Truck dealer* or *Machine repair service* only if they accurately describe services offered.
 3. Use **exactly** the same name, address and phone numbers as the website footer.
 4. Add the website URL, opening hours, and real photos of the yard, machines and team.
 5. Add each product category under **Products**, with a photo and a link to the site.
@@ -80,7 +80,7 @@ Every category and product has its own page, generated from the dashboard conten
 | Category | `/products/excavators` | SUNWARD Excavators for Sale in Zambia |
 | Product | `/products/excavators/sunward-swe210` | SUNWARD SWE210 Hydraulic Excavator for Sale in Zambia |
 
-Each page has its own title, meta description, canonical URL, breadcrumbs (also as structured data, so Google can show them in results), a WhatsApp/call enquiry button and links to related products. Product pages also carry `Product` structured data with the full spec list. All pages are in `sitemap.xml`.
+Each page has its own title, meta description, canonical URL, breadcrumbs (also as structured data, so Google can show them in results), a WhatsApp/call enquiry button and links to related products. Product pages use page and breadcrumb structured data, but do not currently declare `Product` rich-result data because prices, offers and reviews are not published. All pages are in `sitemap.xml`.
 
 How it works with the dashboard:
 
@@ -88,7 +88,7 @@ How it works with the dashboard:
 - **URLs come from the names:** the category label and the product's brand + name (e.g. "SUNWARD" + "SWE210" → `sunward-swe210`). **Renaming a product or category changes its URL** and the old URL stops working, which loses its Google ranking. Avoid renaming once pages are indexed; if you must, ask a developer to add a redirect in `next.config.ts`.
 - **Fill in the "models" field with the product type** (e.g. "Hydraulic excavator", "4WD tractor"). It goes into the page title, and it's what people search for.
 - **Specs matter:** the first three specs appear in the Google description, and all of them on the page.
-- **Prices:** without prices, products can't get Google's product rich results (price/stock shown in results). Showing prices, even "from K…", would unlock them.
+- **Prices:** accurate, public prices and matching offer data may make products eligible for Google's product rich results; eligibility does not guarantee that Google will show them. Never add invented prices, availability or reviews just to satisfy a test.
 
 Code: routes in `src/app/products/`, URLs and page copy in `src/lib/catalog.ts`, structured data in `src/lib/json-ld.ts`.
 
@@ -106,7 +106,7 @@ Words customers actually use ("price", "for sale", "in Lusaka", "in Zambia") sho
 
 Links from trusted Zambian and industry sites are one of Google's strongest ranking signals. Get listed or linked on:
 
-- SUNWARD, YTO, WEICHAI, SINOTRUK and SHACMAN **official dealer pages** (ask each brand to list us as the Zambia dealer; this is the most valuable link);
+- **Official dealer pages for brands where Mastone is authorized** (currently confirmed: SUNWARD, YTO and WEICHAI; ask those brands to link to Mastone's site). Do not claim authorization for other brands unless it is confirmed;
 - Zambian business directories: ZDA, Zambia Chamber of Commerce, Yellow Pages Zambia, ZambiaInvest, etc.;
 - industry associations (Chamber of Mines, Zambia National Farmers Union), trade shows (Agritech Expo) and local news coverage of deliveries or partnerships;
 - our own Facebook, LinkedIn, YouTube and TikTok profiles, each linking back to the site.
