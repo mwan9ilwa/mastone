@@ -5,7 +5,17 @@ import { ContentIcon } from "@/components/content-icons";
 import { FieldGrid, ImageField, ListEditor, SelectField, SpecsField, StringListField, TextField } from "@/components/admin/fields";
 import { SectionEditor } from "@/components/admin/section-editor";
 import { adminSections } from "@/components/admin/sections";
-import { iconNames, type ContentKey, type HeroSlide, type IconName, type Industry, type Service, type SiteContent } from "@/lib/content/schema";
+import {
+  iconNames,
+  type ContentKey,
+  type HeroSlide,
+  type IconName,
+  type Industry,
+  type Service,
+  type ShowcaseItem,
+  type SiteContent,
+  type Testimonial,
+} from "@/lib/content/schema";
 
 type EditorProps<K extends ContentKey> = { initial: SiteContent[K] };
 
@@ -299,6 +309,89 @@ export function IndustriesEditor({ initial }: EditorProps<"industries">) {
               <IconField value={s.icon} onChange={(icon) => patch({ icon })} />
               <TextField label="Description" multiline value={s.text} onChange={(text) => patch({ text })} />
               <ImageField label="Image" value={s.image} onChange={(image) => patch({ image })} dark />
+            </FieldGrid>
+          )}
+        />
+      )}
+    </Shell>
+  );
+}
+
+export function TestimonialsEditor({ initial }: EditorProps<"testimonials">) {
+  return (
+    <Shell sectionKey="testimonials" initial={initial}>
+      {(testimonials, set) => (
+        <ListEditor
+          items={testimonials}
+          onChange={set}
+          addLabel="Add testimonial"
+          title={(item) => item.name || "New testimonial"}
+          create={(): Testimonial => ({ quote: "", name: "" })}
+          render={(item, patch) => (
+            <FieldGrid>
+              <TextField label="Customer name" value={item.name} onChange={(name) => patch({ name })} />
+              <TextField label="Position (optional)" value={item.position ?? ""} onChange={(position) => patch({ position })} />
+              <TextField label="Company (optional)" value={item.company ?? ""} onChange={(company) => patch({ company })} />
+              <ImageField label="Customer photo (optional)" value={item.image ?? ""} onChange={(image) => patch({ image })} />
+              <TextField label="Testimonial" multiline value={item.quote} onChange={(quote) => patch({ quote })} className="sm:col-span-2" />
+            </FieldGrid>
+          )}
+        />
+      )}
+    </Shell>
+  );
+}
+
+export function ShowcaseEditor({ initial }: EditorProps<"showcase">) {
+  return (
+    <Shell sectionKey="showcase" initial={initial}>
+      {(items, set) => (
+        <ListEditor
+          items={items}
+          onChange={set}
+          addLabel="Add showcase item"
+          title={(item) => item.title || `New ${item.kind}`}
+          create={(): ShowcaseItem => ({ kind: "photo", title: "" })}
+          render={(item, patch) => (
+            <FieldGrid>
+              <TextField label="Title" value={item.title} onChange={(title) => patch({ title })} />
+              <SelectField
+                label="Media type"
+                value={item.kind}
+                onChange={(kind) => patch({ kind })}
+                options={[
+                  { value: "photo", label: "Photo" },
+                  { value: "video", label: "Video" },
+                ]}
+              />
+              <TextField
+                label="Description (optional)"
+                multiline
+                value={item.description ?? ""}
+                onChange={(description) => patch({ description })}
+                className="sm:col-span-2"
+              />
+              {item.kind === "photo" ? (
+                <ImageField label="Photo" value={item.image ?? ""} onChange={(image) => patch({ image })} dark className="sm:col-span-2" />
+              ) : (
+                <>
+                  <TextField
+                    label="Video URL"
+                    value={item.videoUrl ?? ""}
+                    onChange={(videoUrl) => patch({ videoUrl })}
+                    placeholder="Paste a YouTube, Vimeo, or other video link"
+                    hint="Supports YouTube, Vimeo, Dailymotion, Facebook, TikTok, Instagram, Rumble, Loom, Wistia and Streamable links, plus direct MP4/WebM URLs."
+                    className="sm:col-span-2"
+                  />
+                  <ImageField
+                    label="Poster image (optional)"
+                    value={item.poster ?? ""}
+                    onChange={(poster) => patch({ poster })}
+                    dark
+                    className="sm:col-span-2"
+                  />
+                </>
+              )}
             </FieldGrid>
           )}
         />

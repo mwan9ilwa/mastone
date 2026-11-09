@@ -1,4 +1,15 @@
-import type { About, Brand, Company, HeroSlide, Industry, ProductCategory, Service, SiteContent } from "./schema";
+import type {
+  About,
+  Brand,
+  Company,
+  HeroSlide,
+  Industry,
+  ProductCategory,
+  Service,
+  ShowcaseItem,
+  SiteContent,
+  Testimonial,
+} from "./schema";
 
 const company: Company = {
   name: "Mastone Investments Ltd",
@@ -374,6 +385,9 @@ const industries: Industry[] = [
   { icon: "Factory", title: "Industry", text: "Equipment, lubricants and after-sales support for plants and workshops.", image: "/images/products/loader-sl52w.png" },
 ];
 
+const testimonials: Testimonial[] = [];
+const showcase: ShowcaseItem[] = [];
+
 /** The content the site shipped with; used for any section that hasn't been saved from the dashboard yet. */
 export const defaultContent: SiteContent = {
   company,
@@ -383,4 +397,6 @@ export const defaultContent: SiteContent = {
   about,
   services,
   industries,
+  testimonials,
+  showcase,
 };

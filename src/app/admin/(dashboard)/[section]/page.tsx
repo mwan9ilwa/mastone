@@ -8,6 +8,8 @@ import {
   IndustriesEditor,
   ProductsEditor,
   ServicesEditor,
+  ShowcaseEditor,
+  TestimonialsEditor,
 } from "@/components/admin/editors";
 import { adminSections } from "@/components/admin/sections";
 import { requireAdmin } from "@/lib/auth";
@@ -22,6 +24,8 @@ const editors: { [K in ContentKey]: ComponentType<{ initial: SiteContent[K] }> }
   about: AboutEditor,
   services: ServicesEditor,
   industries: IndustriesEditor,
+  showcase: ShowcaseEditor,
+  testimonials: TestimonialsEditor,
 };
 
 export function generateStaticParams() {

@@ -1,4 +1,4 @@
-import { Award, Building, Images, LayoutGrid, Package, Users, Wrench, type LucideIcon } from "lucide-react";
+import { Award, Building, Images, LayoutGrid, MessageSquareQuote, Package, Users, Video, Wrench, type LucideIcon } from "lucide-react";
 import type { ContentKey } from "@/lib/content/schema";
 
 export type AdminSection = { slug: string; key: ContentKey; title: string; description: string; icon: LucideIcon };
@@ -11,4 +11,6 @@ export const adminSections: AdminSection[] = [
   { slug: "about", key: "about", title: "About", description: "Company profile text, highlights and stats", icon: Users },
   { slug: "services", key: "services", title: "Services", description: "The “What we do” cards", icon: Wrench },
   { slug: "industries", key: "industries", title: "Industries", description: "Sectors in the horizontal scrolling showcase", icon: LayoutGrid },
+  { slug: "showcase", key: "showcase", title: "Showcase", description: "Project photos and videos on the home page", icon: Video },
+  { slug: "testimonials", key: "testimonials", title: "Testimonials", description: "Customer feedback featured on the home page", icon: MessageSquareQuote },
 ];
