@@ -30,6 +30,8 @@ navigation to open one:
 | **About** | Company profile paragraphs, highlights and statistics |
 | **Services** | The service cards on the home page |
 | **Industries** | The industry showcase cards, including their icons and images |
+| **Showcase** | Project photos and videos on the home page |
+| **Testimonials** | Customer quotes and optional customer details or photos |
 
 Section headings and the parallax banner wording are maintained in the website
 code, not in the dashboard.
@@ -86,6 +88,14 @@ small so pages load well, especially on mobile connections.
   years.
 - **Services and industries:** select an icon from the available list.
   Industries also need an image.
+- **Showcase:** add photos using the image uploader; visitors can open each
+  photo in a full-screen viewer and navigate between photos. For videos, paste
+  a YouTube, Vimeo, Dailymotion, Facebook, TikTok, Instagram, Rumble, Loom,
+  Wistia or Streamable link, or a direct MP4/WebM URL. An optional poster image
+  appears before playback for direct video files. The site does not upload
+  video files.
+- **Testimonials:** add customer feedback and the customer's name. Position,
+  company and photo are optional.
 
 Adding or renaming a product or category affects its automatically generated
 catalogue page URL. Avoid renaming published items after they have been

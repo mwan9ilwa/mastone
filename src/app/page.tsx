@@ -8,6 +8,8 @@ import { Products } from "@/components/sections/products";
 import { ParallaxBanner } from "@/components/sections/parallax-banner";
 import { Services } from "@/components/sections/services";
 import { Industries } from "@/components/sections/industries";
+import { Showcase } from "@/components/sections/showcase";
+import { Testimonials } from "@/components/sections/testimonials";
 import { Contact } from "@/components/sections/contact";
 import { Footer } from "@/components/sections/footer";
 import type { Metadata } from "next";
@@ -40,6 +42,8 @@ export default async function Home() {
         <ParallaxBanner />
         <Services services={content.services} />
         <Industries industries={content.industries} />
+        <Showcase items={content.showcase} />
+        <Testimonials testimonials={content.testimonials} />
         <Contact company={content.company} productCategories={content.productCategories} />
       </main>
       <Footer company={content.company} brands={content.brands} catalog={catalog} />

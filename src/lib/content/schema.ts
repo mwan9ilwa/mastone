@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { getVideoEmbedUrl } from "./video";
 
 const text = z.string().trim().min(1, "Required");
 const image = z.string().trim().min(1, "Image is required");
@@ -98,6 +99,41 @@ export const serviceSchema = z.object({ icon: z.enum(iconNames), title: text, te
 
 export const industrySchema = serviceSchema.extend({ image });
 
+export const testimonialSchema = z.object({
+  quote: text,
+  name: text,
+  position: optionalText,
+  company: optionalText,
+  image: optionalText,
+});
+
+export const showcaseItemSchema = z
+  .object({
+    kind: z.enum(["photo", "video"]),
+    title: text,
+    description: optionalText,
+    image: optionalText,
+    videoUrl: optionalText,
+    poster: optionalText,
+  })
+  .superRefine((item, ctx) => {
+    if (item.kind === "photo" && !item.image) {
+      ctx.addIssue({ code: "custom", path: ["image"], message: "Image is required" });
+    }
+    if (item.kind === "video") {
+      if (!item.videoUrl) {
+        ctx.addIssue({ code: "custom", path: ["videoUrl"], message: "Video URL is required" });
+      } else if (!getVideoEmbedUrl(item.videoUrl)) {
+        ctx.addIssue({
+          code: "custom",
+          path: ["videoUrl"],
+          message:
+            "Use a supported video link (YouTube, Vimeo, Dailymotion, Facebook, TikTok, Instagram, Rumble, Loom, Wistia or Streamable) or an MP4/WebM URL",
+        });
+      }
+    }
+  });
+
 export const contentSchemas = {
   company: companySchema,
   heroSlides: z.array(heroSlideSchema).min(1, "Add at least one slide"),
@@ -106,6 +142,8 @@ export const contentSchemas = {
   about: aboutSchema,
   services: z.array(serviceSchema),
   industries: z.array(industrySchema),
+  testimonials: z.array(testimonialSchema),
+  showcase: z.array(showcaseItemSchema),
 };
 
 export type ContentKey = keyof typeof contentSchemas;
@@ -120,3 +158,5 @@ export type Brand = z.output<typeof brandSchema>;
 export type About = SiteContent["about"];
 export type Service = z.output<typeof serviceSchema>;
 export type Industry = z.output<typeof industrySchema>;
+export type Testimonial = z.output<typeof testimonialSchema>;
+export type ShowcaseItem = z.output<typeof showcaseItemSchema>;
